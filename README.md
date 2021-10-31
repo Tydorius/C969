@@ -32,3 +32,5 @@ client_schedule
 - Open a browser within @lab.VirtualMachine(Win10).SelectLink and log into https://onedrive.live.com/about/en-us/signin/ using either your WGU or personal credentials.
 - Upload your file and note the location of your exported SQL file.
 - After these steps are completed, your database will be available for you to import back into another instance.
+
+Should be using MySQL Workbench 8.0.25.
