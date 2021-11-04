@@ -1,86 +1,149 @@
 ## Classes
-Calendar
-- +LoadMonth
-- +LoadWeek
-- +ConvertTime(DATETIME, TIMEZONE)
+### Calendar
+- Month LoadMonth(DateTime)
+- Week LoadWeek(DateTime)
+- DateTime ConvertTime(DateTime, TimeZone)
 
-Event
-- +CreateEvent
-- +UpdateEvent
-- +DeleteEvent
-- +ArchiveEvent
-- -Title
-- -StartDate
-- -StartTime
-- -EndDate
-- -EndTime
-- -Owners<User>
-- -Customer
-- *CheckForConflicts()
+### Week
+- BindingList Sunday<Day>
+- BindingList Monday<Day>
+- BindingList Tuesday<Day>
+- BindingList Wednesday<Day>
+- BindingList Thursday<Day>
+- BindingList Friday<Day>
+- BindingList Saturday<Day>
 
-AlertList
-- +QueueAlerts
-- +SendAlerts
+abstract ### Day
+- Integer DayOfYear
+- Integer DayofMonth
+- Integer DayofWeek
 
-UserList
-- +CreateUser
-- +UpdateUser
-- +DeleteUser
+abstract ### User
+- String Username
+- String PasswordHash
+- String Language
 
-User
-- -Username
-- -PasswordHash
-- -Language
+### CurrentUser
+- String TimeZone
 
-CurrentUser : User
-- -TimeZone
+### UserDay
+- BindingList AppointmentBindingList<Appointment>
+- User CurrentUser
 
-Timezone
-- -TimeZoneID
-- -Name
-- -GMT
-- -StartDate
-- -EndDate
+### AlertList
+- QueueAlerts(CurrentUser)
+- SendAlert(Alert)
+- BindingList Alerts<Alert>
 
+### Alert
+- Integer AppointmentID
+- DateTime StartDateTime
 
-Customer
-- +CreateCustomer
-- +UpdateCustomer
-- +DeleteCustomer
-- -customerId INT(10) (Int32)
-- -customerName VARCHAR(45) (String)
-- -addressId INT(10) (Address class)
-- -active TINYINT(1) (Boolean)
-- -createDate DATETIME
-- -createdBy VARCHAR(40)
-- -lastUpdate TIMESTAMP
-- -lastUpdateBy VARCHAR(40) 
+### frmLogIn
+- CurrentUser LogIn(Username,Password)
 
-frmLogIn
-- *LogIn(Username,Password)
-- --> frmCalendar
+### frmCustomers
+- Boolean CreateCustomer(Customer)
+- Boolean UpdateCustomer(CustomerID, Customer)
+- Boolean DeleteCustomer(CustomerID)
+- Void LoadCustomers()
+- Boolean ViewCustomer(CustomerID)
 
-frmCalendar
-- *LoadCalendar(User,PasswordHash)
-- *ViewCustomers
-- *ViewAccount
-- *ViewReports
-- --> frmCustomers
-- --> frmAccount
-- --> frmReports
+### frmAccount
+- Boolean LoadUser(CurrentUser)
+- Boolean UpdateUser(UserID, User)
 
-frmCustomers
-- *LoadCustomers
-- *ViewCustomer
-- *NewCustomer
+### frmCalendar
+- Boolean LoadCalendar(CurrentUser)
+- Void ViewCustomers()
+- Void ViewAccount()
+- Void ViewReports()
+- Void ViewUsers()
 
-frmAccount
-- *LoadUser
-- *UpdateUser
+### frmAppointment
+- Boolean CreateAppointment(Appointment)
+- Boolean UpdateAppointment(AppointmentID, Appointment)
+- Boolean CheckForConflicts(AppointmentID)
+- Boolean DeleteAppointment(AppointmentID)
 
-frmReports
-- *CreateReport
-- *DownloadReport
+### frmReports
+- Boolean CreateReport(ReportID)
+- Boolean DownloadReport(CurrentReport)
+- Report CurrentReport
+
+### Report
+- array ReportData
+
+### frmUsers
+- Boolean CreateUser(User)
+- Boolean UpdateUser(UserID, User)
+- Boolean DeleteUser(UserID)
+
+### Country
+- countryId int
+- country varchar(50)
+- createDate datetime
+- createdBy varchar(40)
+- lastUpdate timestamp
+- lastUpdateBy varchar(40)
+
+### Customer
+- customerId int
+- customerName varchar(45)
+- addressId int
+- active tinyint(1)
+- createDate datetime
+- createdBy varchar(40)
+- lastUpdate timestamp
+- lastUpdateBy varchar(40)
+
+### Address
+- addressId int
+- address varchar(50)
+- address2 varchar(50)
+- cityId int
+- postalCode varchar(10)
+- phone varchar(20)
+- createDate datetime
+- createdBy varchar(40)
+- lastUpdate timestamp
+- lastUpdateBy varchar(40)
+
+### City
+- cityId int
+- city varchar(50)
+- countryId int
+- createDate datetime
+- createdBy varchar(40)
+- lastUpdate timestamp
+- lastUpdateBy varchar(40)
+
+### Appointment
+- appointmentId int
+- customerId int
+- userId int
+- title varchar(255)
+- description text
+- location text
+- contact text
+- type text
+- url varchar(255)
+- start datetime
+- end datetime
+- createDate datetime
+- createdBy varchar(40)
+- lastUpdate timestamp
+- lastUpdateBy varchar(40)
+
+### User
+- userId int
+- userName varchar(50)
+- password varchar(50)
+- active tinyint
+- createDate datetime
+- createdBy varchar(40)
+- lastUpdate timestamp
+- lastUpdateBy varchar(40)
 
 ## Requirements:
 - Login form that supports multiple languages. At least one additional language should exist. (Spanish) It should provide rejection results based on login failure.
