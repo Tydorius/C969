@@ -1,0 +1,195 @@
+@startuml
+!theme vibrant
+
+class Calendar {
+Month LoadMonth(DateTime)
+Week LoadWeek(DateTime)
+DateTime ConvertTime(DateTime, TimeZone)
+}
+
+class Week {
+BindingList Sunday<Day>
+BindingList Monday<Day>
+BindingList Tuesday<Day>
+BindingList Wednesday<Day>
+BindingList Thursday<Day>
+BindingList Friday<Day>
+BindingList Saturday<Day>
+}
+
+abstract class Day {
+Integer DayOfYear
+Integer DayofMonth
+Integer DayofWeek
+}
+
+abstract class User {
+String Username
+String PasswordHash
+String Language
+}
+
+class CurrentUser {
+String TimeZone
+}
+
+class UserDay {
+BindingList AppointmentBindingList<Appointment>
+User CurrentUser
+}
+
+class AlertList {
+QueueAlerts(CurrentUser)
+SendAlert(Alert)
+BindingList Alerts<Alert>
+}
+
+class Alert {
+Integer AppointmentID
+DateTime StartDateTime
+}
+
+class frmLogIn {
+CurrentUser LogIn(Username,Password)
+}
+
+class frmCustomers {
+Boolean CreateCustomer(Customer)
+Boolean UpdateCustomer(CustomerID, Customer)
+Boolean DeleteCustomer(CustomerID)
+void LoadCustomers()
+Boolean ViewCustomer(CustomerID)
+}
+
+class frmAccount {
+LoadUser(CurrentUser)
+UpdateUser(UserID, User)
+}
+
+class frmCalendar {
+LoadCalendar(CurrentUser)
+ViewCustomers()
+ViewAccount()
+ViewReports()
+ViewUsers()
+}
+
+class frmAppointment {
+Boolean CreateAppointment(Appointment)
+Boolean UpdateAppointment(AppointmentID, Appointment)
+Boolean CheckForConflicts(AppointmentID)
+Boolean DeleteAppointment(AppointmentID)
+}
+
+class frmReports {
+CreateReport(ReportID)
+DownloadReport(CurrentReport)
+Report CurrentReport
+}
+
+class Report {
+array ReportData
+}
+
+class frmUsers {
+CreateUser(User)
+UpdateUser(UserID, User)
+DeleteUser(UserID)
+}
+
+class Country {
+countryId	int
+country	varchar(50)
+createDate	datetime
+createdBy	varchar(40)
+lastUpdate	timestamp
+lastUpdateBy	varchar(40)
+}
+
+class Customer {
+customerId	int
+customerName	varchar(45)
+addressId	int
+active	tinyint(1)
+createDate	datetime
+createdBy	varchar(40)
+lastUpdate	timestamp
+lastUpdateBy	varchar(40)
+}
+
+class Address {
+addressId	int
+address	varchar(50)
+address2	varchar(50)
+cityId	int
+postalCode	varchar(10)
+phone	varchar(20)
+createDate	datetime
+createdBy	varchar(40)
+lastUpdate	timestamp
+lastUpdateBy	varchar(40)
+}
+
+class City {
+cityId	int
+city	varchar(50)
+countryId	int
+createDate	datetime
+createdBy	varchar(40)
+lastUpdate	timestamp
+lastUpdateBy	varchar(40)
+}
+
+class Appointment {
+appointmentId	int
+customerId	int
+userId	int
+title	varchar(255)
+description	text
+location	text
+contact	text
+type	text
+url	varchar(255)
+start	datetime
+end	datetime
+createDate	datetime
+createdBy	varchar(40)
+lastUpdate	timestamp
+lastUpdateBy	varchar(40)
+}
+
+class User {
+userId	int
+userName	varchar(50)
+password	varchar(50)
+active	tinyint
+createDate	datetime
+createdBy	varchar(40)
+lastUpdate	timestamp
+lastUpdateBy	varchar(40)
+}
+
+Appointment --* Alert
+Alert --* AlertList
+Country --* City
+City --* Address
+Address --* Customer
+Customer --* Appointment
+User --* Appointment
+frmCustomers *-- Customer
+Calendar --* frmCalendar
+Appointment --* UserDay
+User <|-- CurrentUser
+Day <|-- UserDay
+Calendar *-- Week
+Week *-- Day
+frmLogIn --* frmCalendar
+frmCalendar --* frmReports
+frmCalendar --* frmAccount
+frmCalendar --* frmCustomers
+frmCalendar --* frmUsers
+frmCalendar --* frmAppointment
+UserDay *-- CurrentUser
+CurrentUser *-- AlertList
+frmReports *-- Report
+@enduml
