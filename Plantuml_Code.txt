@@ -39,8 +39,8 @@ User CurrentUser
 }
 
 class AlertList {
-QueueAlerts(CurrentUser)
-SendAlert(Alert)
+Boolean QueueAlerts(CurrentUser)
+Boolean SendAlert(Alert)
 BindingList Alerts<Alert>
 }
 
@@ -57,21 +57,21 @@ class frmCustomers {
 Boolean CreateCustomer(Customer)
 Boolean UpdateCustomer(CustomerID, Customer)
 Boolean DeleteCustomer(CustomerID)
-void LoadCustomers()
+Void LoadCustomers()
 Boolean ViewCustomer(CustomerID)
 }
 
 class frmAccount {
-LoadUser(CurrentUser)
-UpdateUser(UserID, User)
+Boolean LoadUser(CurrentUser)
+Boolean UpdateUser(UserID, User)
 }
 
 class frmCalendar {
-LoadCalendar(CurrentUser)
-ViewCustomers()
-ViewAccount()
-ViewReports()
-ViewUsers()
+Boolean LoadCalendar(CurrentUser)
+Void ViewCustomers()
+Void ViewAccount()
+Void ViewReports()
+Void ViewUsers()
 }
 
 class frmAppointment {
@@ -82,8 +82,8 @@ Boolean DeleteAppointment(AppointmentID)
 }
 
 class frmReports {
-CreateReport(ReportID)
-DownloadReport(CurrentReport)
+Boolean CreateReport(ReportID)
+Boolean DownloadReport(CurrentReport)
 Report CurrentReport
 }
 
@@ -92,81 +92,81 @@ array ReportData
 }
 
 class frmUsers {
-CreateUser(User)
-UpdateUser(UserID, User)
-DeleteUser(UserID)
+Boolean CreateUser(User)
+Boolean UpdateUser(UserID, User)
+Boolean DeleteUser(UserID)
 }
 
 class Country {
-countryId	int
-country	varchar(50)
-createDate	datetime
-createdBy	varchar(40)
-lastUpdate	timestamp
-lastUpdateBy	varchar(40)
+countryId int
+country varchar(50)
+createDate datetime
+createdBy varchar(40)
+lastUpdate timestamp
+lastUpdateBy varchar(40)
 }
 
 class Customer {
-customerId	int
-customerName	varchar(45)
-addressId	int
-active	tinyint(1)
-createDate	datetime
-createdBy	varchar(40)
-lastUpdate	timestamp
-lastUpdateBy	varchar(40)
+customerId int
+customerName varchar(45)
+addressId int
+active tinyint(1)
+createDate datetime
+createdBy varchar(40)
+lastUpdate timestamp
+lastUpdateBy varchar(40)
 }
 
 class Address {
-addressId	int
-address	varchar(50)
-address2	varchar(50)
-cityId	int
-postalCode	varchar(10)
-phone	varchar(20)
-createDate	datetime
-createdBy	varchar(40)
-lastUpdate	timestamp
-lastUpdateBy	varchar(40)
+addressId int
+address varchar(50)
+address2 varchar(50)
+cityId int
+postalCode varchar(10)
+phone varchar(20)
+createDate datetime
+createdBy varchar(40)
+lastUpdate timestamp
+lastUpdateBy varchar(40)
 }
 
 class City {
-cityId	int
-city	varchar(50)
-countryId	int
-createDate	datetime
-createdBy	varchar(40)
-lastUpdate	timestamp
-lastUpdateBy	varchar(40)
+cityId int
+city varchar(50)
+countryId int
+createDate datetime
+createdBy varchar(40)
+lastUpdate timestamp
+lastUpdateBy varchar(40)
 }
 
 class Appointment {
-appointmentId	int
-customerId	int
-userId	int
-title	varchar(255)
-description	text
-location	text
-contact	text
-type	text
-url	varchar(255)
-start	datetime
-end	datetime
-createDate	datetime
-createdBy	varchar(40)
-lastUpdate	timestamp
-lastUpdateBy	varchar(40)
+appointmentId int
+customerId int
+userId int
+title varchar(255)
+description text
+location text
+contact text
+type text
+url varchar(255)
+start datetime
+end datetime
+createDate datetime
+createdBy varchar(40)
+lastUpdate timestamp
+lastUpdateBy varchar(40)
 }
 
 class User {
-userId	int
-userName	varchar(50)
-password	varchar(50)
-active	tinyint
-createDate	datetime
-createdBy	varchar(40)
-lastUpdate	timestamp
-lastUpdateBy	varchar(40)
+userId int
+userName varchar(50)
+password varchar(50)
+active tinyint
+createDate datetime
+createdBy varchar(40)
+lastUpdate timestamp
+lastUpdateBy varchar(40)
 }
 
 Appointment --* Alert
