@@ -54,3 +54,74 @@ File Restrictions
 File name may contain only letters, numbers, spaces, and these symbols: ! - _ . * ' ( )
 File size limit: 200 MB
 File types allowed: doc, docx, rtf, xls, xlsx, ppt, pptx, odt, pdf, txt, qt, mov, mpg, avi, mp3, wav, mp4, wma, flv, asf, mpeg, wmv, m4v, svg, tif, tiff, jpeg, jpg, gif, png, zip, rar, tar, 7z
+
+## RUBRIC
+### A:LOG-IN FORM
+
+COMPETENT
+
+The log-in form has functionality to determine the user’s location and translate log-in and error control messages into the user’s language and in 1 additional language. The code is complete and functions properly.
+
+- Complete.
+
+### B:CUSTOMER RECORDS
+
+COMPETENT
+
+The application has functionality to add, update, and delete customer records in the database, including name, address, and phone number. The code is complete and functions properly.
+
+- Complete.
+
+### C:APPOINTMENTS
+
+COMPETENT
+
+The application code has functionality to add, update, and delete appointments, capture the type of appointment, and link the appointments to the specific customer record in the database. The code is complete and functions properly.
+
+### D:CALENDAR VIEWS
+
+COMPETENT
+
+The application has functionality to view the calendar by month and by week. The code is complete and functions properly.
+
+### E:TIME ZONES
+
+COMPETENT
+
+The application has functionality to automatically adjust appointment times based on user time zones and daylight-saving time. The code is complete and functions properly.
+
+### F:EXCEPTION CONTROL
+
+COMPETENT
+
+The application code includes exception controls to prevent each of the given points and uses at least 2 different mechanisms. The code is complete and functions properly.
+
+### G:LAMBDA EXPRESSIONS
+
+COMPETENT
+
+The application code includes 2 or more appropriate lambda expressions to make the program more efficient and provides a logical justification of the use of each lambda expression with in-line comments. The code is complete and functions properly.
+
+### H:ALERTS
+
+COMPETENT
+
+The application has functionality for an alert if there is an appointment within 15 minutes of the user’s log-in. The code is complete and functions properly.
+
+### I:REPORTS
+
+COMPETENT
+
+The application has functionality to generate each of the given reports. The code is complete and functions properly.
+
+### J:ACTIVITY LOG
+
+COMPETENT
+
+The application has functionality to track user activity by recording timestamps for user log-ins in a .txt file, and each new record is appended to the log file if the file already exists. The code is complete and functions properly.
+
+### K:PROFESSIONAL COMMUNICATION
+
+COMPETENT
+
+Content reflects attention to detail, is organized, and focuses on the main ideas as prescribed in the task or chosen by the candidate. Terminology is pertinent, is used correctly, and effectively conveys the intended meaning. Mechanics, usage, and grammar promote accurate interpretation and understanding.
