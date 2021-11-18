@@ -102,6 +102,8 @@ COMPETENT
 
 The application code includes exception controls to prevent each of the given points and uses at least 2 different mechanisms. The code is complete and functions properly.
 
+- Complete.
+
 ### G:LAMBDA EXPRESSIONS
 
 COMPETENT
@@ -119,6 +121,8 @@ The application has functionality for an alert if there is an appointment within
 COMPETENT
 
 The application has functionality to generate each of the given reports. The code is complete and functions properly.
+
+- Complete
 
 ### J:ACTIVITY LOG
 
