@@ -78,17 +78,23 @@ COMPETENT
 
 The application code has functionality to add, update, and delete appointments, capture the type of appointment, and link the appointments to the specific customer record in the database. The code is complete and functions properly.
 
+- Complete.
+
 ### D:CALENDAR VIEWS
 
 COMPETENT
 
 The application has functionality to view the calendar by month and by week. The code is complete and functions properly.
 
+- Complete.
+
 ### E:TIME ZONES
 
 COMPETENT
 
 The application has functionality to automatically adjust appointment times based on user time zones and daylight-saving time. The code is complete and functions properly.
+
+- Complete.
 
 ### F:EXCEPTION CONTROL
 
@@ -119,6 +125,8 @@ The application has functionality to generate each of the given reports. The cod
 COMPETENT
 
 The application has functionality to track user activity by recording timestamps for user log-ins in a .txt file, and each new record is appended to the log file if the file already exists. The code is complete and functions properly.
+
+- Complete
 
 ### K:PROFESSIONAL COMMUNICATION
 
