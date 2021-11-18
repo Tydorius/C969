@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace C969
 {
@@ -15,16 +16,31 @@ namespace C969
         public string userName;
         public string password;
         public int active;
+
+        // Ignore. Starting at the Day level.
+
+        public Month loadMonth(DateTime selectedDate)
+        {
+            var firstDayOfMonth = new DateTime(selectedDate.Year, selectedDate.Month, 1);
+            return null;
+        }
+
+        public Week loadWeek(DateTime selectedWeek)
+        {
+            return null;
+        }
     }
 
     public class Calendar
     {
-
+        public Month selectedMonth;
     }
 
     public class Month
     {
-
+        public int startingWeekDay;
+        public int weekCount;
+        public BindingList<Day> DayList;
     }
 
     public class Week
@@ -38,17 +54,56 @@ namespace C969
         public BindingList<Day> Saturday;
     }
 
-    public abstract class Day
+    public class Day
     {
-        public int DayOfYear;
-        public int DayofMonth;
-        public int DayofWeek;
-    }
+        public DateTime Date;
+        public BindingList<Appointment> AppointmentList = new BindingList<Appointment>();
+        public int offset = Convert.ToInt32(DateTimeOffset.Now.Offset.Hours);
 
-    public class UserDay : Day
-    {
-        public BindingList<Appointment> AppointmentList;
-        public User CurrentUser;
+        public int loadAppointments(DateTime selectedDay, int userId)
+        {
+            string strStart = selectedDay.ToUniversalTime().ToString("yyyy-MM-dd");
+            string strEnd = selectedDay.AddDays(1).ToUniversalTime().ToString("yyyy-MM-dd");
+
+            string strQuery = "SELECT customerId,title,description,location,contact,type,url,start,end,appointmentId FROM appointment WHERE userId = " + Convert.ToString(userId) + " AND start >= CAST('" + strStart + " 00:00:00' AS datetime) AND end < CAST('" + strEnd + " 00:00:00' AS datetime);";
+            List<List<string>> lstResult = MainSession.csession.conn.TryQuery(strQuery);
+
+            if(lstResult.Count == 0)
+            {
+                return 0;
+            }
+
+            BindingList<Appointment> result = new BindingList<Appointment>();
+
+            foreach (List<string> line in lstResult)
+            {
+                Appointment tmpAppointment = new Appointment();
+                
+                // Lambda Expression Two
+                Func<DateTime, DateTime> fromUtc = dt => dt.AddHours(offset);
+
+                tmpAppointment.appointmentId = Convert.ToInt32(line[9]);
+                tmpAppointment.customerId = Convert.ToInt32(line[0]);
+                tmpAppointment.title = line[1];
+                tmpAppointment.description = line[2];
+                tmpAppointment.location = line[3];
+                tmpAppointment.contact = line[4];
+                tmpAppointment.type = line[5];
+                tmpAppointment.url = line[6];
+                tmpAppointment.start = fromUtc(DateTime.Parse(line[7]));
+                tmpAppointment.end = fromUtc(DateTime.Parse(line[8]));
+
+                // Lambda expression replaced:
+                // tmpAppointment.start = tmpAppointment.start.AddHours(offset);
+                // tmpAppointment.end = tmpAppointment.end.AddHours(offset);
+
+                result.Add(tmpAppointment);
+
+            }
+
+            AppointmentList = result;
+            return lstResult.Count;
+        }
     }
 
     public class Appointment
@@ -69,6 +124,14 @@ namespace C969
         public DateTime lastUpdate;
         public string lastUpdateBy;
 
+        int offset = Convert.ToInt32(DateTimeOffset.Now.Offset.Hours);
+
+        public void deleteAppointment(int appointmentId)
+        {
+            string strQuery = "DELETE FROM appointment WHERE appointmentId = " + Convert.ToString(appointmentId) + ";";
+            List<List<string>> lstResult = MainSession.csession.conn.TryQuery(strQuery);
+        }
+
         public bool checkConflicts(DateTime start, DateTime end, int customerId, int userId, int AppointmentId)
         {
             string strStart =start.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss");
@@ -77,7 +140,6 @@ namespace C969
             // Since AppointmentId is -1 for new events, this still works with no modifications.
             // Otherwise, it pulls all events other than our current event that potentially conflict.
             string strQuery = "SELECT * FROM appointment WHERE appointmentId != " + Convert.ToString(AppointmentId) + " AND ((CAST('" + strStart + "' AS datetime) > start AND CAST('" + strStart + "' AS datetime) < end) OR (CAST('" + strEnd + "' AS datetime) > start AND CAST('" + strEnd + "' AS datetime) < end) OR (CAST('" + strStart + "' AS datetime) < start AND CAST('" + strEnd + "' AS datetime) > end)) AND (customerId = " + Convert.ToString(customerId) + " OR userId = " + Convert.ToString(userId) + ");";
-            MessageBox.Show(strQuery);
             List<List<string>> lstResult = MainSession.csession.conn.TryQuery(strQuery);
 
             // If our result is greater than 0...
@@ -92,8 +154,11 @@ namespace C969
 
         public Appointment lookupAppointment(int AppointmentId)
         {
+            // Lambda Expression One
+            Func<DateTime, DateTime> fromUtc = dt => dt.AddHours(offset);
+
             Appointment result = new Appointment();
-            string strQuery = "SELECT customerId, title, description, location, contact, type, url, start, end FROM appiontment WHERE appointmentId = " + Convert.ToString(AppointmentId) + ";";
+            string strQuery = "SELECT customerId, title, description, location, contact, type, url, start, end FROM appointment WHERE appointmentId = " + Convert.ToString(AppointmentId) + ";";
 
             // Run the query.
             List<List<string>> lstResult = MainSession.csession.conn.TryQuery(strQuery);
@@ -106,16 +171,34 @@ namespace C969
             result.contact = lstResult[0][4];
             result.type = lstResult[0][5];
             result.url = lstResult[0][6];
-            result.start = DateTime.ParseExact(lstResult[0][7], "yyyy-MM-dd HH:mm:ss", null);
-            result.end = DateTime.ParseExact(lstResult[0][8], "yyyy-MM-dd HH:mm:ss", null);
+            MessageBox.Show(lstResult[0][7]);
+            result.start = fromUtc(DateTime.Parse(lstResult[0][7]));
+            MessageBox.Show(Convert.ToString(result.start));
+            MessageBox.Show(Convert.ToString(lstResult[0][8]));
+            result.end = fromUtc(DateTime.Parse(lstResult[0][8]));
+            MessageBox.Show(Convert.ToString(result.end));
+
+            // Lambda expression replaced additional lines:
+            // result.start = result.start.AddHours(offset);
+            // result.end = result.end.AddHours(offset);
 
             return result;
         }
 
         public void saveAppointment(Appointment newAppointment, int AppointmentId)
         {
-            string strStart = newAppointment.start.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss");
-            string strEnd = newAppointment.end.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss");
+            // Lambda Expression Two
+            Func<DateTime, DateTime> toUtc = dt => dt.AddHours(-offset);
+
+            newAppointment.start = toUtc(newAppointment.start);
+            newAppointment.end = toUtc(newAppointment.end);
+
+            string strStart = newAppointment.start.ToString("yyyy-MM-ddTHH:mm:ss");
+            string strEnd = newAppointment.end.ToString("yyyy-MM-ddTHH:mm:ss");
+
+            // Lambda expression replaced:
+            // string strStart = newAppointment.start.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss");
+            // string strEnd = newAppointment.end.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss");
 
             // We need to get our timestamp first.
             // We want to trim off everything including and after the ".".

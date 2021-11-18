@@ -467,6 +467,9 @@ namespace C969
 
             // Show calendar form.
             MainSession.frmCalendar.Show();
+
+            // Dispose of this form.
+            this.Dispose();
         }
 
         private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)

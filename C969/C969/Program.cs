@@ -14,6 +14,16 @@ namespace C969
         // Initialize session and make it globally available.
         public static CurrentSession csession = new CurrentSession();
         public static frmCalendar frmCalendar = new frmCalendar();
+        public static int offset = Convert.ToInt32(DateTimeOffset.Now.Offset.Hours);
+
+    }
+    // FileTree stores our static file names for the application. These are static global variables.
+    static class FileTree
+    {
+        // Obtain the current directory.
+        public static string strHomeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        // Our inventory list CSV file.
+        public static string strLogFile = strHomeDirectory + "\\access.log";
     }
     public class CurrentSession
     {

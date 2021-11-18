@@ -23,8 +23,5 @@ C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.pdb
 C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmLogin.resources
 C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmCalendar.resources
 C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmAppointment.resources
-C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmAccount.resources
 C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmCustomers.resources
-C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmUsers.resources
 C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmReports.resources
-C:\Users\Michael\source\repos\C969\C969\obj\Debug\C969.frmTests.resources

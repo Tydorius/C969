@@ -31,6 +31,8 @@ namespace C969
             // If it's not a new appointment, we need to load the selected appointment.
             if (id != -1)
             {
+                InitializeComponent();
+
                 appointmentId = id;
 
                 tmpAppointment = tmpAppointment.lookupAppointment(id);
@@ -44,6 +46,7 @@ namespace C969
                     if (tmpAppointment.customerId == tmpCust.customerId)
                     {
                         txtbxCustomer.Text = tmpCust.customerName;
+                        cCust = tmpCust.customerId;
                         break;
                     }
                 }
@@ -55,16 +58,15 @@ namespace C969
                 txtbxLocation.Text = tmpAppointment.location;
                 txtbxContact.Text = tmpAppointment.contact;
                 txtbxType.Text = tmpAppointment.type;
+                txtbxURL.Text = tmpAppointment.url;
             }
-
-            InitializeComponent();
         }
 
         private void frmAppointment_Load(object sender, EventArgs e)
         {
             loadCustomers();
             updateLanguage();
-            // changedText();
+            changedText();
             saved = true;
             this.FormClosing += new FormClosingEventHandler(frmAppointment_FormClosing);
         }
@@ -123,6 +125,9 @@ namespace C969
 
             // Show calendar form.
             MainSession.frmCalendar.Show();
+
+            // Dispose of this form.
+            this.Dispose();
         }
         private void loadCustomers()
         {
@@ -319,7 +324,36 @@ namespace C969
                 }
                 valid = false;
             }
-            if(valid == false)
+            if (datetimeStart.Value.Hour < 8 || datetimeEnd.Value.Hour > 17)
+            {
+                switch (lng)
+                {
+                    case 0:
+                        strError += "\nMust be scheduled between 8 a.m. and 5 p.m. local time.";
+                        break;
+                    case 1:
+                        strError += "\nDebe programarse entre las 8 a.m. y las 5 p.m. hora local.";
+                        break;
+                }
+                valid = false;
+            }
+
+            TimeSpan duration = datetimeEnd.Value.Subtract(datetimeStart.Value);
+
+            if (Convert.ToInt32(duration) > 9)
+            {
+                switch (lng)
+                {
+                    case 0:
+                        strError += "\nEvents can not be longer than one business day.";
+                        break;
+                    case 1:
+                        strError += "\nLos eventos no pueden durar más de un día hábil.";
+                        break;
+                }
+                valid = false;
+            }
+            if (valid == false)
             {
                 MessageBox.Show(strError);
             }
