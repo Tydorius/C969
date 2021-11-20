@@ -15,7 +15,6 @@ namespace C969
         public static CurrentSession csession = new CurrentSession();
         public static frmCalendar frmCalendar = new frmCalendar();
         public static int offset = Convert.ToInt32(DateTimeOffset.Now.Offset.Hours);
-
     }
     // FileTree stores our static file names for the application. These are static global variables.
     static class FileTree
@@ -31,6 +30,20 @@ namespace C969
         public TimeZone ctz = System.TimeZone.CurrentTimeZone;
         public Connection conn = new Connection();
         public customerList customerList = new customerList();
+
+        // Lambda wrappers
+        // Justification - Replaced the need to declare offset and perform conversions in multiple places within the app.
+        // Replaced approximately 30 lines of code throughout the application.
+        public DateTime LocalToUTC(DateTime local)
+        {
+            Func<DateTime, DateTime> toUtc = dt => dt.AddHours(-MainSession.offset);
+            return toUtc(local);
+        }
+        public DateTime UTCToLocal(DateTime UTC)
+        {
+            Func<DateTime, DateTime> fromUtc = dt => dt.AddHours(MainSession.offset);
+            return fromUtc(UTC);
+        }
 
         // Detect current language.
         public string Language = CultureInfo.CurrentCulture.Name;   

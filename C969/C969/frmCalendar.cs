@@ -24,6 +24,7 @@ namespace C969
         public frmCalendar()
         {
             InitializeComponent();
+
         }
 
         private void frmCalendar_Load(object sender, EventArgs e)
@@ -44,13 +45,9 @@ namespace C969
             // Check for upcoming appointments.
             foreach (DataRow row in dtblAppointments.Rows)
             {
-                int offset = Convert.ToInt32(DateTimeOffset.Now.Offset.Hours);
-
                 DateTime eventDT = DateTime.Parse(row["Start"].ToString());
 
-                eventDT.AddHours(offset);
-
-                if(eventDT < DateTime.Now && eventDT.AddMinutes(15) >= DateTime.Now)
+                if(eventDT > DateTime.Now && eventDT.AddMinutes(15) >= DateTime.Now)
                 {
                     MessageBox.Show("Alert - Appointment " + row["ID"].ToString() + " " + row["Title"].ToString() + " starts in 15 minutes or less.");
                 }
@@ -98,7 +95,6 @@ namespace C969
         {
             int dayOfWeek = Convert.ToInt32(selectedDate.DayOfWeek);
 
-            // Potential Lambda option.
             cwSunday = selectedDate.AddDays(-dayOfWeek);
 
             switch(dayOfWeek)
@@ -194,57 +190,77 @@ namespace C969
         private void mcCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             selectedDate = mcCalendar.SelectionStart;
-            mcCalendar.SelectionEnd = selectedDate;
-            loadAppointments();
+            updateWeek();
         }
 
         private void rbSunday_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDate = cwSunday;
-            mcCalendar.SelectionStart = selectedDate;
-            loadAppointments();
+            if (rbSunday.Checked == true)
+            {
+                selectedDate = cwSunday;
+                mcCalendar.SelectionStart = selectedDate;
+                loadAppointments();
+            }
         }
 
         private void rbMonday_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDate = cwSunday.AddDays(1);
-            mcCalendar.SelectionStart = selectedDate;
-            loadAppointments();
+            if (rbMonday.Checked == true)
+            {
+                selectedDate = cwSunday.AddDays(1);
+                mcCalendar.SelectionStart = selectedDate;
+                loadAppointments();
+            }
         }
 
         private void rbTuesday_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDate = cwSunday.AddDays(2);
-            mcCalendar.SelectionStart = selectedDate;
-            loadAppointments();
+            if (rbTuesday.Checked == true)
+            {
+                selectedDate = cwSunday.AddDays(2);
+                mcCalendar.SelectionStart = selectedDate;
+                loadAppointments();
+            }
         }
 
         private void rbWednesday_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDate = cwSunday.AddDays(3);
-            mcCalendar.SelectionStart = selectedDate;
-            loadAppointments();
+            if (rbWednesday.Checked == true)
+            {
+                selectedDate = cwSunday.AddDays(3);
+                mcCalendar.SelectionStart = selectedDate;
+                loadAppointments();
+            }
         }
 
         private void rbThursday_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDate = cwSunday.AddDays(4);
-            mcCalendar.SelectionStart = selectedDate;
-            loadAppointments();
+            if (rbThursday.Checked == true)
+            {
+                selectedDate = cwSunday.AddDays(4);
+                mcCalendar.SelectionStart = selectedDate;
+                loadAppointments();
+            }
         }
 
         private void rbFriday_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDate = cwSunday.AddDays(5);
-            mcCalendar.SelectionStart = selectedDate;
-            loadAppointments();
+            if (rbFriday.Checked == true)
+            {
+                selectedDate = cwSunday.AddDays(5);
+                mcCalendar.SelectionStart = selectedDate;
+                loadAppointments();
+            }
         }
 
         private void rbSaturday_CheckedChanged(object sender, EventArgs e)
         {
-            selectedDate = cwSunday.AddDays(6);
-            mcCalendar.SelectionStart = selectedDate;
-            loadAppointments();
+            if (rbSaturday.Checked == true)
+            {
+                selectedDate = cwSunday.AddDays(6);
+                mcCalendar.SelectionStart = selectedDate;
+                loadAppointments();
+            }
         }
 
         // This will clear out all entries and set up the database with test data.
@@ -296,7 +312,7 @@ namespace C969
             strQuery = "DELETE FROM appointment WHERE appointmentID > 3;";
             lstResult = MainSession.csession.conn.TryQuery(strQuery);
 
-
+            loadAppointments();
         }
 
         private void dgvEventList_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -347,6 +363,12 @@ namespace C969
             // If yes ...
             tmpAppointment.deleteAppointment(appointmentId);
 
+            loadAppointments();
+        }
+
+        private void frmCalendar_VisibleChanged(Object sender, EventArgs e)
+        {
+            // Ensure we reload appointments any time we show the calendar.
             loadAppointments();
         }
     }

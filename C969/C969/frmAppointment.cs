@@ -26,21 +26,26 @@ namespace C969
         int cCust = -1;
         int appointmentId = -1;
 
+        // Appointment form. Pass an appointment ID to auto populate existing appointments. Pass -1 to load a blank form.
         public frmAppointment(int id)
         {
+            InitializeComponent();
             // If it's not a new appointment, we need to load the selected appointment.
             if (id != -1)
             {
-                InitializeComponent();
-
+                // Set the appointment ID variable.
                 appointmentId = id;
 
+                // Lookup the appointment and update the tmpAppointment.
                 tmpAppointment = tmpAppointment.lookupAppointment(id);
 
+                // Initiate a list of customers.
                 BindingList<Customer> customers = new BindingList<Customer>();
 
+                // Load a list of customers.
                 customers = MainSession.csession.customerList.loadCustomers();
 
+                // Populate the current customer for the loaded appointment.
                 foreach (Customer tmpCust in customers)
                 {
                     if (tmpAppointment.customerId == tmpCust.customerId)
@@ -51,6 +56,7 @@ namespace C969
                     }
                 }
 
+                // Update the appointment form text.
                 txtbxTitle.Text = tmpAppointment.title;
                 datetimeStart.Value = tmpAppointment.start;
                 datetimeEnd.Value = tmpAppointment.end;
@@ -64,24 +70,32 @@ namespace C969
 
         private void frmAppointment_Load(object sender, EventArgs e)
         {
+            // Load the customer list.
             loadCustomers();
+            // Update the language. NOTE - Not fully implemented.
             updateLanguage();
+            // Check our text and validate.
             changedText();
+            // Saved is ALWAYS true on initial load - We either have nothing to save (new) or we loaded an already saved state (Existing).
             saved = true;
+            // Ensure we check save status on close.
             this.FormClosing += new FormClosingEventHandler(frmAppointment_FormClosing);
         }
 
         private void dgvCustomers_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Double clicking a customer loads that customer as selected.
             loadSelected();
         }
         private void frmAppointment_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Saving space with a single method for form closing and exiting.
             closeForm();
         }
 
         private void updateLanguage()
         {
+            // Again, note that this is not 100% implemented for the entire application.
             if (MainSession.csession.Language == "en")
             {
                 // Do nothing because it's English by default
@@ -105,14 +119,17 @@ namespace C969
             // If we have not saved our changes ... 
             if (saved == false)
             {
+                // Warn the user, ask them if they wish to save.
                 string msg = "You have unsaved changes, are you sure you wish to close this form?";
                 string header = "Confirm Lose Changes";
+                // Update string for es if needed.
                 if (MainSession.csession.Language == "es")
                 {
                     msg = "Tiene cambios sin guardar, ¿está seguro de que desea cerrar este formulario?";
                     header = "Confirmar perder cambios";
                 }
 
+                // Show message, get feedback.
                 DialogResult result = MessageBox.Show(msg, header, MessageBoxButtons.YesNo);
 
                 // If no ...
@@ -122,6 +139,8 @@ namespace C969
                     return;
                 }
             }
+
+            // If yes, we make it here.
 
             // Show calendar form.
             MainSession.frmCalendar.Show();
@@ -134,6 +153,7 @@ namespace C969
             // Clear the table.
             dtblCustomers = new DataTable();
 
+            // Load the data fresh.
             customers = MainSession.csession.customerList.loadCustomers();
 
             // Add columns to data tables.
@@ -167,22 +187,24 @@ namespace C969
 
         private void btnExit_Click(object sender, EventArgs e)
         {
+            // Saving lines with a single close form method.
             closeForm();
-        }
-
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            tmpAppointment.checkConflicts(datetimeStart.Value, datetimeEnd.Value, 1, 2, -1);
         }
 
         private void txtbxTitle_TextChanged(object sender, EventArgs e)
         {
+            // Any time text changes, we want to verify the information.
             changedText();
         }
         private void changedText()
         {
+            // This method only highlights validation issues, but it is not the full validation check.
+
+            // Set saved to false any time text changes.
             saved = false;
 
+            // Note that while I started including items for non-required fields, I stopped.
+            // The rubric only cares about customer, type, URL, and date/times. As such, validation only touches these fields.
             txtbxTitle.BackColor = Color.White;
             datetimeStart.BackColor = Color.White;
             datetimeEnd.BackColor = Color.White;
@@ -235,6 +257,7 @@ namespace C969
                     break;
             }
 
+            // Reset form colors.
             txtbxTitle.BackColor = Color.White;
             datetimeStart.BackColor = Color.White;
             datetimeEnd.BackColor = Color.White;
@@ -245,6 +268,10 @@ namespace C969
             txtbxURL.BackColor = Color.White;
             txtbxCustomer.BackColor = Color.White;
 
+            // All validation checks will append the corresponding message on a new line depending upon the language.
+            // Note that secondary language is not 100% implemented across the entire application.
+
+            // Ensure that we must select a customer.
             if (cCust == -1)
             {
                 
@@ -259,6 +286,7 @@ namespace C969
                 }
                 valid = false;
             }
+            // Ensure type is not null.
             if (txtbxType.Text == null || txtbxType.Text == "")
             {
                 switch (lng)
@@ -272,6 +300,7 @@ namespace C969
                 }
                 valid = false;
             }
+            // Ensure type does not contain dangerous SQL characters.
             if (txtbxType.Text.Contains("\\") || txtbxType.Text.Contains("\""))
             {
                 switch (lng)
@@ -285,6 +314,7 @@ namespace C969
                 }
                 valid = false;
             }
+            // Ensure URL is not null.
             if (txtbxURL.Text == null || txtbxURL.Text == "")
             {
                 switch (lng)
@@ -298,6 +328,7 @@ namespace C969
                 }
                 valid = false;
             }
+            // Ensure URL does not contain dangerous SQL characters.
             if (txtbxType.Text.Contains("\\") || txtbxType.Text.Contains("\""))
             {
                 switch (lng)
@@ -311,6 +342,7 @@ namespace C969
                 }
                 valid = false;
             }
+            // Ensure start time is not greater than end time.
             if (datetimeStart.Value > datetimeEnd.Value)
             {
                 switch (lng)
@@ -324,6 +356,7 @@ namespace C969
                 }
                 valid = false;
             }
+            // Ensure the appointment is within business hours.
             if (datetimeStart.Value.Hour < 8 || datetimeEnd.Value.Hour > 17)
             {
                 switch (lng)
@@ -338,9 +371,11 @@ namespace C969
                 valid = false;
             }
 
+            // Measure the timespan.
             TimeSpan duration = datetimeEnd.Value.Subtract(datetimeStart.Value);
 
-            if (Convert.ToInt32(duration) > 9)
+            // It's easier to check the duration of the timespan, since we know a full workday can only be 9 hours and there are more than 9 hours between the end and start of each day.
+            if (Convert.ToInt32(duration.Hours) > 9)
             {
                 switch (lng)
                 {
@@ -353,59 +388,45 @@ namespace C969
                 }
                 valid = false;
             }
+            // If any of our validations failed, show the error messages.
             if (valid == false)
             {
                 MessageBox.Show(strError);
             }
-
+            // Return the validity status.
             return valid;
         }
 
         public void loadSelected()
         {
-            // If we have not saved our changes ... 
-            if (saved == false)
-            {
-                string msg = "You have unsaved changes, are you sure you wish to load another customer?";
-                string header = "Confirm Lose Changes";
-                if (MainSession.csession.Language == "es")
-                {
-                    msg = "Tiene cambios sin guardar, ¿está seguro de que desea cargar otro cliente? ";
-                    header = "Confirmar perder cambios";
-                }
-
-                DialogResult result = MessageBox.Show(msg, header, MessageBoxButtons.YesNo);
-
-                // If no ...
-                if (result == DialogResult.No)
-                {
-                    //Do nothing
-                    return;
-                }
-            }
-
             // Identify our customer.
             int selectedRowCount = dgvCustomers.CurrentCell.RowIndex;
 
+            // Set the customer ID.
             cCust = Convert.ToInt32(dgvCustomers.Rows[selectedRowCount].Cells[0].Value);
 
+            // Update customer name text.
             txtbxCustomer.Text = Convert.ToString(dgvCustomers.Rows[selectedRowCount].Cells[1].Value);
 
+            // Run validation.
             changedText();
-            saved = true;
         }
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
+            // Load the selected line item.
             loadSelected();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // If running the validation item returns false, we do nothing.
+            // The error message displays through validate() so there is no additional feedback needed.
             if(validate() == false)
             {
                 return;
             }
+            // Because the rubric only requires a handful of items, some fields are being populated with filler text.
             tmpAppointment.userId = MainSession.csession.user.userId;
             tmpAppointment.customerId = cCust;
             tmpAppointment.title = "Not part of requirements.";
@@ -414,11 +435,13 @@ namespace C969
             tmpAppointment.contact = "Not part of requirements.";
             tmpAppointment.type = txtbxType.Text;
             tmpAppointment.url = txtbxURL.Text;
-            tmpAppointment.start = datetimeStart.Value.ToUniversalTime();
-            tmpAppointment.end = datetimeEnd.Value.ToUniversalTime();
+            tmpAppointment.start = datetimeStart.Value;
+            tmpAppointment.end = datetimeEnd.Value;
 
+            // Once we have our appointment, we check for conflicts.
             if (tmpAppointment.checkConflicts(tmpAppointment.start, tmpAppointment.end, tmpAppointment.customerId, tmpAppointment.userId, appointmentId) == true)
             {
+                // If checking for conflicts is true, we know there is a conflict and display the corresponding error.
                 if (MainSession.csession.Language == "en")
                 {
                     MessageBox.Show("The select time is in conflict. Please update and try again.");
@@ -430,8 +453,13 @@ namespace C969
                 return;
             }
 
-            tmpAppointment.saveAppointment(tmpAppointment, appointmentId);
+            // If we make it here, we didn't trigger the return and save our appointment.
+            // We also update the tmpAppointment.appointmentId to the new one. This may be the existing ID or it may be a new one, which is why this is important.
+            tmpAppointment.appointmentId = tmpAppointment.saveAppointment(tmpAppointment, appointmentId);
 
+            appointmentId = tmpAppointment.appointmentId;
+
+            // We've saved, so we set saved to true so we don't trigger a warning on exit.
             saved = true;
         }
     }

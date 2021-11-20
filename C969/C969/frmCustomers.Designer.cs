@@ -29,6 +29,7 @@ namespace C969
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCustomers));
             this.dgvCustomers = new System.Windows.Forms.DataGridView();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -51,6 +52,7 @@ namespace C969
             this.lblCountry = new System.Windows.Forms.Label();
             this.lblPostal = new System.Windows.Forms.Label();
             this.txtbxPostal = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
             this.SuspendLayout();
             // 
@@ -276,11 +278,20 @@ namespace C969
             this.txtbxPostal.TabIndex = 7;
             this.txtbxPostal.TextChanged += new System.EventHandler(this.txtbxPostal_TextChanged);
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(375, 227);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(237, 152);
+            this.label1.TabIndex = 14;
+            this.label1.Text = resources.GetString("label1.Text");
+            // 
             // frmCustomers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 441);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.mtxtbxPhone);
             this.Controls.Add(this.cbStatus);
             this.Controls.Add(this.txtbxCity);
@@ -337,5 +348,6 @@ namespace C969
         private System.Windows.Forms.Label lblCountry;
         private System.Windows.Forms.Label lblPostal;
         private System.Windows.Forms.TextBox txtbxPostal;
+        private System.Windows.Forms.Label label1;
     }
 }

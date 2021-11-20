@@ -81,36 +81,38 @@ namespace C969
             // 
             // btnDeleteApt
             // 
-            this.btnDeleteApt.Location = new System.Drawing.Point(512, 406);
+            this.btnDeleteApt.Location = new System.Drawing.Point(471, 406);
             this.btnDeleteApt.Name = "btnDeleteApt";
-            this.btnDeleteApt.Size = new System.Drawing.Size(100, 23);
+            this.btnDeleteApt.Size = new System.Drawing.Size(135, 23);
             this.btnDeleteApt.TabIndex = 3;
-            this.btnDeleteApt.Text = "Delete Event";
+            this.btnDeleteApt.Text = "Delete Appointment";
             this.btnDeleteApt.UseVisualStyleBackColor = true;
             this.btnDeleteApt.Click += new System.EventHandler(this.btnDeleteApt_Click);
             // 
             // btnNewApt
             // 
-            this.btnNewApt.Location = new System.Drawing.Point(406, 406);
+            this.btnNewApt.Location = new System.Drawing.Point(330, 406);
             this.btnNewApt.Name = "btnNewApt";
-            this.btnNewApt.Size = new System.Drawing.Size(100, 23);
+            this.btnNewApt.Size = new System.Drawing.Size(135, 23);
             this.btnNewApt.TabIndex = 3;
-            this.btnNewApt.Text = "New Event";
+            this.btnNewApt.Text = "New Appointment";
             this.btnNewApt.UseVisualStyleBackColor = true;
             this.btnNewApt.Click += new System.EventHandler(this.btnNewApt_Click);
             // 
             // btnEditApt
             // 
-            this.btnEditApt.Location = new System.Drawing.Point(300, 406);
+            this.btnEditApt.Location = new System.Drawing.Point(189, 406);
             this.btnEditApt.Name = "btnEditApt";
-            this.btnEditApt.Size = new System.Drawing.Size(100, 23);
+            this.btnEditApt.Size = new System.Drawing.Size(135, 23);
             this.btnEditApt.TabIndex = 3;
-            this.btnEditApt.Text = "Edit Event";
+            this.btnEditApt.Text = "Edit Appointment";
             this.btnEditApt.UseVisualStyleBackColor = true;
             this.btnEditApt.Click += new System.EventHandler(this.btnEditApt_Click);
             // 
             // dgvEventList
             // 
+            this.dgvEventList.AllowUserToAddRows = false;
+            this.dgvEventList.AllowUserToDeleteRows = false;
             this.dgvEventList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvEventList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEventList.Location = new System.Drawing.Point(12, 35);
@@ -270,6 +272,7 @@ namespace C969
             this.Name = "frmCalendar";
             this.Text = "C969 | Calendar";
             this.Load += new System.EventHandler(this.frmCalendar_Load);
+            this.VisibleChanged += new System.EventHandler(this.frmCalendar_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEventList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

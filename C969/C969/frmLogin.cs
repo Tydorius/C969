@@ -13,7 +13,6 @@ namespace C969
 {
     public partial class frmLogin : Form
     {
-
         public frmLogin()
         {
             InitializeComponent();
@@ -26,12 +25,15 @@ namespace C969
             if (MainSession.csession.Language.Contains("en-"))
             {
                 MainSession.csession.Language = "en";
+                MessageBox.Show("English detected as environment language. Setting to English. Additionally, your timezone offset has been detected as " + Convert.ToString(MainSession.offset));
             }
             if(MainSession.csession.Language.Contains("es-"))
             {
                 MainSession.csession.Language = "es";
+                MessageBox.Show("El español detectado como lengua ambiental. Configuración al español. Tenga en cuenta que la rúbrica solo cubre el español para el formulario de inicio de sesión. No es totalmente compatible con el resto de la aplicación. Además, la diferencia de zona horaria se ha detectado como " + Convert.ToString(MainSession.offset));
                 changeLanguage();
             }
+            // If an unknown language is detected, we display an error in both English and Spanish.
             if(MainSession.csession.Language != "en" && MainSession.csession.Language != "es")
             {
                 MessageBox.Show("Unknown language detected. Defaulting to English.\nSe detectó un idioma desconocido.Por defecto al inglés.");
@@ -117,17 +119,20 @@ namespace C969
 
         private void btnExit_Click(object sender, EventArgs e)
         {
+            // Ensures we close our connection and exit.
             MainSession.csession.conn.conn.Close();
             Environment.Exit(0);
             
         }
         private void btnLanguage_Click(object sender, EventArgs e)
         {
+            // Run the change language method.
             changeLanguage();
         }
 
         public void changeLanguage()
         {
+            // Flip based upon the language.
             if (MainSession.csession.Language == "en")
             {
                 btnLanguage.Text = "English";
