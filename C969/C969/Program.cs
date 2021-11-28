@@ -31,6 +31,11 @@ namespace C969
         public Connection conn = new Connection();
         public customerList customerList = new customerList();
 
+        // Detect current language.
+        // public string Language = CultureInfo.CurrentUICulture.Name;
+        // Switching to using two letter iso language instead of name.
+        public string Language = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
+
         // Lambda wrappers
         // Justification - Replaced the need to declare offset and perform conversions in multiple places within the app.
         // Replaced approximately 30 lines of code throughout the application.
@@ -44,9 +49,6 @@ namespace C969
             Func<DateTime, DateTime> fromUtc = dt => dt.AddHours(MainSession.offset);
             return fromUtc(UTC);
         }
-
-        // Detect current language.
-        public string Language = CultureInfo.CurrentCulture.Name;   
 
         // Dual-language error messages.
         public void csError(int code)

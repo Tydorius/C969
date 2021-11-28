@@ -22,16 +22,22 @@ namespace C969
         { 
 
             // Set initial language.
-            if (MainSession.csession.Language.Contains("en-"))
+            if (MainSession.csession.Language =="en")
             {
-                MainSession.csession.Language = "en";
                 MessageBox.Show("English detected as environment language. Setting to English. Additionally, your timezone offset has been detected as " + Convert.ToString(MainSession.offset));
             }
-            if(MainSession.csession.Language.Contains("es-"))
+            if(MainSession.csession.Language == "es")
             {
-                MainSession.csession.Language = "es";
                 MessageBox.Show("El español detectado como lengua ambiental. Configuración al español. Tenga en cuenta que la rúbrica solo cubre el español para el formulario de inicio de sesión. No es totalmente compatible con el resto de la aplicación. Además, la diferencia de zona horaria se ha detectado como " + Convert.ToString(MainSession.offset));
-                changeLanguage();
+
+                btnLanguage.Text = "English";
+                lblPassword.Text = "Contraseña:";
+                lblUsername.Text = "Usuario:";
+                btnLogin.Text = "Acceso";
+                btnExit.Text = "Salida";
+                this.Text = "C969 | Acceso";
+                MainSession.csession.Language = "es";
+
             }
             // If an unknown language is detected, we display an error in both English and Spanish.
             if(MainSession.csession.Language != "en" && MainSession.csession.Language != "es")

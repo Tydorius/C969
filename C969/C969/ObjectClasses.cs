@@ -62,10 +62,12 @@ namespace C969
 
         public int loadAppointments(DateTime selectedDay, int userId)
         {
+            int revoffset = (offset * -1);
+
             string strStart = selectedDay.ToUniversalTime().ToString("yyyy-MM-dd");
             string strEnd = selectedDay.AddDays(1).ToUniversalTime().ToString("yyyy-MM-dd");
 
-            string strQuery = "SELECT customerId,title,description,location,contact,type,url,start,end,appointmentId FROM appointment WHERE userId = " + Convert.ToString(userId) + " AND start >= CAST('" + strStart + " 00:00:00' AS datetime) AND end < CAST('" + strEnd + " 00:00:00' AS datetime);";
+            string strQuery = "SELECT customerId,title,description,location,contact,type,url,start,end,appointmentId FROM appointment WHERE userId = " + Convert.ToString(userId) + " AND start >= DATE_ADD(CAST('" + strStart + " 00:00:00' AS datetime), interval " + Convert.ToString(revoffset) + " hour) AND end < DATE_ADD(CAST('" + strEnd + " 00:00:00' AS datetime), interval " + Convert.ToString(revoffset) + " hour);";
             List<List<string>> lstResult = MainSession.csession.conn.TryQuery(strQuery);
 
             if(lstResult.Count == 0)
